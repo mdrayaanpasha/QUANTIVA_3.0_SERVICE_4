@@ -3,7 +3,7 @@ import cors from "cors";
 import { createClient } from 'redis';
 import dotenv from "dotenv";
 import amqplib from "amqplib";
-import express from "express";
+
 
 const port = process.env.PORT || 3003;
 
