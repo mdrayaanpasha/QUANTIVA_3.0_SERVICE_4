@@ -3,6 +3,10 @@ import cors from "cors";
 import { createClient } from 'redis';
 import dotenv from "dotenv";
 import amqplib from "amqplib";
+import express from "express";
+
+const port = process.env.PORT || 3003;
+
 
 dotenv.config();
 
@@ -62,3 +66,21 @@ await channel.consume(Queue, async (msg) => {
         channel.ack(msg);
     }
 }, { noAck: false });   
+
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.get("/health", (req, res) => {
+  res.json({ status: "ok", uptime: process.uptime() });
+});
+
+app.get("/", (req, res) => {
+  res.json({ message: "Server is running" });
+});
+
+app.listen(port, async () => {
+    console.log(`Server running on http://localhost:${port}`);
+});
